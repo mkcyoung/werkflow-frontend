@@ -42,6 +42,7 @@ const App = () => {
   const closeModal = (): void => {
     setModalOpen(false);
     setError(undefined);
+
   };
 
 
