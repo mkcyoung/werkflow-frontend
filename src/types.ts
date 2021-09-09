@@ -18,16 +18,16 @@ export interface Task {
     name?: string;
     category?: string;
     schedule?: Schedule;
-    people?: string[];
+    people?: Person[];
     time?: number;
 }
 
 export interface Person {
     id: string;
-    firstName?: string;
-    lastName?: string;
+    firstName: string;
+    lastName: string;
     schedule?: Schedule;
-    tasks?: string[];
+    tasks?: Task[];
     daysOff?: string[];
 }
 

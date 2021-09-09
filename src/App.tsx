@@ -7,6 +7,8 @@ import { getPeople } from './reducers/peopleReducer'
 
 import { Task, Person } from './types'
 
+import DropDown from './components/DropDown'
+
 
 const App = () => {
 
@@ -29,7 +31,8 @@ const App = () => {
   return (
     <div className="App">
       <ul>
-        {people.map((person) => <li key={person.id}>{person.firstName}</li>)}
+        {/* {people.map((person) => <li key={person.id}>{person.firstName}</li>)} */}
+        {tasks.map((task) => <DropDown key={task.id} task={task} /> )}
       </ul>
     </div>
   )
