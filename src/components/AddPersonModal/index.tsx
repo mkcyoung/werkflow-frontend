@@ -1,8 +1,9 @@
 import React from 'react'
-// import { Modal, Button, message } from 'antd'
+import { Typography } from 'antd'
 import { Modal, Segment } from 'semantic-ui-react';
 import AddPersonForm from './AddPersonForm'
 import { Task } from '../../types'
+
 
 interface Props {
     modalOpen: boolean;
@@ -14,7 +15,9 @@ interface Props {
 
 const AddPersonModal = ({ modalOpen, onClose, onSubmit, error, taskData }: Props) => (
     <Modal open={modalOpen} onClose={onClose} centered={false} style={{textAlign: 'center'}} closeIcon>
-      <Modal.Header>Add a new person</Modal.Header>
+      <Modal.Header>
+          <Typography.Title> add a new person </Typography.Title>
+    </Modal.Header>
       <Modal.Content>
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
         <AddPersonForm onSubmit={onSubmit} onCancel={onClose} taskData={taskData} />

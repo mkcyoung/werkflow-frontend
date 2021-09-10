@@ -8,12 +8,15 @@ import {
   Row,
   Col,
   Select,
-  TimePicker
+  TimePicker,
+  Typography,
+  Divider
 } from 'antd'
 import { nameRules } from './validationRules';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Task } from '../../types';
 const { Option } = Select;
+const { Title } = Typography
 
 interface Props {
   onSubmit: () => void;
@@ -128,6 +131,9 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
           </Form.Item>
         </Space>
       </Form.Item>
+      <Divider>
+        <Title level={2}> weekly schedule </Title>
+      </Divider>
 
       <Form.Item
       // labelCol={{ span: 3, offset: 4}}
@@ -139,7 +145,7 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
               {fields.map(({ key, name, fieldKey, ...restField }) => (
                 <Space key={key} align="baseline">
                   <Form.Item
-                    label='day'
+                    // label='day'
                     {...restField}
                     name={[name, 'day']}
                     fieldKey={[fieldKey, 'day']}
@@ -149,6 +155,7 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
                       onChange={handleDaySelection}
                       style={{ width: 120 }}
                       allowClear={true}
+                      placeholder='select day'
                     >
                       {
                         availableDays.map((day)=> (
@@ -179,7 +186,7 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
                       >
                         <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
                       </Form.Item>
-                      <MinusCircleOutlined onClick={() => remove(name)} />
+                      <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => remove(name)} />
                     </Space>
                   </Form.Item>
                 
@@ -195,7 +202,9 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
           )}
         </Form.List>
       </Form.Item>
-
+      <Divider>
+        <Title level={2}> tasks </Title>
+      </Divider>
       <Form.Item
         wrapperCol={{ span: 14, offset: 5 }}
         name={'tasks'}

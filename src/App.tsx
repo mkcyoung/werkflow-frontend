@@ -53,7 +53,7 @@ const App = () => {
         onSubmit={submitNewPerson}
         error={error}
         onClose={closeModal}
-        taskData={tasks}
+        taskData={tasks} // this might not work well, may need to move fetching tasks to the actual modal form?
       />
       <Button onClick={() => openModal()}> add person </Button>
       {/* <ul>
