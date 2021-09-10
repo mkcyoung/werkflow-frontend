@@ -34,7 +34,7 @@ const App = () => {
   console.log(people)
 
   const submitNewPerson = () => {
-    console.log('submit')
+    console.log("submitted")
   }
 
   const openModal = (): void => setModalOpen(true);

@@ -7,6 +7,7 @@ import {
   BrowserRouter as Router
 } from 'react-router-dom'
 import 'antd/dist/antd.css' //ANTD styling components
+import 'semantic-ui-css/semantic.min.css' //Semantic UI styling
 
 ReactDOM.render(
   <Router>
