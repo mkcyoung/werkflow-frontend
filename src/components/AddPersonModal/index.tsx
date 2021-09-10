@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AddPersonModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
-    <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
+    <Modal open={modalOpen} onClose={onClose} centered={false} style={{textAlign: 'center'}} closeIcon>
       <Modal.Header>Add a new person</Modal.Header>
       <Modal.Content>
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
