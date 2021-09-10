@@ -12,11 +12,13 @@ import {
 } from 'antd'
 import { nameRules } from './validationRules';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Task } from '../../types';
 const { Option } = Select;
 
 interface Props {
   onSubmit: () => void;
   onCancel: () => void;
+  taskData: Task[]
 }
 
 const validationSchema = Yup.object().shape({
@@ -40,7 +42,7 @@ const dayOptions = [
   {value: 'saturday', label: 'Saturday'}
 ]
 
-const AddPersonForm = ({ onSubmit, onCancel } : Props ) => {
+const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
   const [form] = Form.useForm();
   const [availableDays, setDays] = useState(dayOptions)
 
@@ -56,6 +58,10 @@ const AddPersonForm = ({ onSubmit, onCancel } : Props ) => {
   // const handleTimeSelection = (time : any, timeString : string[]) => {
   //   console.log(time, timeString)
   // }
+
+  const handleTaskSelection = (value:any) => {
+    console.log(`selected: ${value}`)
+  }
 
   return (
     <Form
@@ -189,6 +195,25 @@ const AddPersonForm = ({ onSubmit, onCancel } : Props ) => {
           )}
         </Form.List>
       </Form.Item>
+
+      <Form.Item
+        wrapperCol={{ span: 14, offset: 5 }}
+        name={'tasks'}
+      >
+        <Select
+          mode='multiple'
+          allowClear
+          placeholder="select tasks"
+          onChange={handleTaskSelection}
+        >
+          {
+            taskData.map((task)=> (
+              <Option key={task.id} value={task.id}> {task.name} </Option>
+            ))
+          }
+        </Select>
+      </Form.Item>
+
       
       <Form.Item>
         <Button type="primary" htmlType="submit">

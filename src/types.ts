@@ -36,7 +36,7 @@ export interface Schedule {
 
 export interface Task {
     id: string;
-    name?: string;
+    name: string;
     category?: string;
     schedule: Schedule;
     people?: Person[];

@@ -53,6 +53,7 @@ const App = () => {
         onSubmit={submitNewPerson}
         error={error}
         onClose={closeModal}
+        taskData={tasks}
       />
       <Button onClick={() => openModal()}> add person </Button>
       {/* <ul>
