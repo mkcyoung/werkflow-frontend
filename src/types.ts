@@ -8,21 +8,24 @@ export interface PersonHours {
     end: string;
 }
 
+export type WeekDay = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'
+
 export interface Day {
     // date: Date;
-    timeIn: PersonHours;
+    day: WeekDay;
+    time: PersonHours;
     taskHours: number;
 }
 
-export interface PersonSchedule {
-    sunday: Day;
-    monday: Day;
-    tuesday: Day;
-    wednesday: Day;
-    thursday: Day;
-    friday: Day;
-    saturday: Day;
-}
+// export interface PersonSchedule {
+//     sunday: Day;
+//     monday: Day;
+//     tuesday: Day;
+//     wednesday: Day;
+//     thursday: Day;
+//     friday: Day;
+//     saturday: Day;
+// }
 
 export interface Schedule {
     sunday: string[];
@@ -37,7 +40,7 @@ export interface Schedule {
 export interface Task {
     id: string;
     name: string;
-    category?: string;
+    category: string;
     schedule: Schedule;
     people?: Person[];
     time?: number;
@@ -57,8 +60,18 @@ export interface Name {
 export interface Person {
     id: string;
     name: Name;
-    schedule: PersonSchedule;
+    schedule: Day[];
     tasks: Task[];
     daysOff?: DayOff[];
 }
 
+// Person field with tasks omitted
+export type PersonNoTasks = Omit<Person, 'tasks'>;
+
+export type TasksNoPeople = Omit<Task,'people'>
+
+export interface PersonFormValues {
+    name: Name;
+    schedule: Day[];
+    tasks: string[]
+}

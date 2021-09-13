@@ -14,12 +14,12 @@ import {
 } from 'antd'
 import { nameRules } from './validationRules';
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
-import { Task } from '../../types';
+import { Task, PersonFormValues } from '../../types';
 const { Option } = Select;
 const { Title } = Typography
 
 interface Props {
-  onSubmit: () => void;
+  onSubmit: (values: PersonFormValues) => Promise<void>;
   onCancel: () => void;
   taskData: Task[]
 }
@@ -85,10 +85,10 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
       }}
       layout="horizontal"
       // requiredMark={'optional'}
-      onFinish={(fieldsValues : any) => {
+      onFinish={(fieldsValues : any)  => {
             // same shape as initial values
             console.log(fieldsValues);
-            const values = {
+            const values : PersonFormValues = {
               ...fieldsValues,
               'schedule': fieldsValues.schedule.map((day: any) => {
                 return {
@@ -101,14 +101,17 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
               })
             }
             console.log(values)
+            onSubmit(values)
       }}
       onFinishFailed={onFinishFailed}
     >
-
+      <Divider>
+        <Title level={2} > name </Title>
+      </Divider>
       <Form.Item 
-      label='name'
-      labelCol={{ span: 4, offset: 3 }}
-      wrapperCol={{ span: 14 }}>
+      // label='name'
+      // labelCol={{ span: 4, offset: 3 }}
+      wrapperCol={{ span: 14, offset: 5 }}>
         <Space>
           <Form.Item
             // validateTrigger="onBlur"

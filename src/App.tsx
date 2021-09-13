@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import axios from "axios";
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from './types';
 
-import { getTasks } from './reducers/taskReducer'
-import { getPeople } from './reducers/peopleReducer'
 
-import { Task, Person } from './types'
+import { getTasks } from './reducers/taskReducer'
+import { getPeople, addPerson } from './reducers/peopleReducer'
+
+import { Task, Person, PersonFormValues } from './types'
 
 import DropDown from './components/DropDown'
 import AddPersonModal from "./components/AddPersonModal";
 import { Button } from 'antd';
-
 
 const App = () => {
 
@@ -33,8 +34,10 @@ const App = () => {
   const people : Person[] = useAppSelector(state => state.people)
   console.log(people)
 
-  const submitNewPerson = () => {
-    console.log("submitted")
+  const submitNewPerson = async (values: PersonFormValues ) => {
+    console.log("submitted", values)
+    dispatch(addPerson(values));
+    closeModal();
   }
 
   const openModal = (): void => setModalOpen(true);

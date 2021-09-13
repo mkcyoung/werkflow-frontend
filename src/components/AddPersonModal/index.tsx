@@ -2,13 +2,13 @@ import React from 'react'
 import { Typography } from 'antd'
 import { Modal, Segment } from 'semantic-ui-react';
 import AddPersonForm from './AddPersonForm'
-import { Task } from '../../types'
+import { Task, PersonFormValues } from '../../types'
 
 
 interface Props {
     modalOpen: boolean;
     onClose: () => void;
-    onSubmit: () => void;
+    onSubmit: (values: PersonFormValues) => Promise<void>;
     error?: string;
     taskData: Task[];
 }
