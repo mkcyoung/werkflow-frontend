@@ -20,19 +20,22 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
 
-  // initalize tasks
+  // initalize tasks & people
   useEffect(() => {
+    console.log(" in app use effect")
     dispatch(getTasks())
-  }, [dispatch])
-  const tasks : Task[] = useAppSelector(state => state.tasks)
-  console.log(tasks)
-
-  // initialize people
-  useEffect(() => {
     dispatch(getPeople())
   }, [dispatch])
+  const tasks : Task[] = useAppSelector(state => state.tasks)
   const people : Person[] = useAppSelector(state => state.people)
-  console.log(people)
+  console.log("Tasks: ",tasks)
+  console.log("People: ",people)
+  // // initialize people
+  // useEffect(() => {
+  //   dispatch(getPeople())
+  // }, [dispatch])
+  
+  
 
   const submitNewPerson = async (values: PersonFormValues ) => {
     console.log("submitted", values)

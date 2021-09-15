@@ -10,7 +10,8 @@ import {
   Select,
   TimePicker,
   Typography,
-  Divider
+  Divider,
+  message
 } from 'antd'
 import { nameRules } from './validationRules';
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
@@ -22,6 +23,10 @@ interface Props {
   onSubmit: (values: PersonFormValues) => Promise<void>;
   onCancel: () => void;
   taskData: Task[]
+}
+
+const errorMessage = (error : string) => {
+  message.error(error)
 }
 
 const validationSchema = Yup.object().shape({
@@ -70,26 +75,36 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
     <Form
       form={form}
       name='AddPersonForm'
+      autoComplete='off'
       initialValues={{
         name: {
           firstName: '',
           lastName: ''
         },
-        // schedule: [
-        //   {
-        //     day: 'Sunday',
-        //     startTime: '',
-        //     endTime: '',
-        //   }
-        // ],
+        schedule: [
+          {
+            day: undefined,
+            startTime: undefined,
+            endTime: undefined,
+          }
+        ],
       }}
       layout="horizontal"
       // requiredMark={'optional'}
       onFinish={(fieldsValues : any)  => {
             // same shape as initial values
-            console.log(fieldsValues);
+            // console.log(fieldsValues);
+            if(!fieldsValues.schedule || fieldsValues.schedule.length === 0){
+              errorMessage('must enter a schedule')
+              throw new Error('must enter schedule')
+              
+            }
             const values : PersonFormValues = {
               ...fieldsValues,
+              'name': {
+                'first': fieldsValues.name.first.trim().toLowerCase(),
+                'last': fieldsValues.name.last.trim().toLowerCase()
+              },
               'schedule': fieldsValues.schedule.map((day: any) => {
                 return {
                   ...day,
@@ -100,6 +115,7 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
                 }
               })
             }
+
             console.log(values)
             onSubmit(values)
       }}
@@ -215,8 +231,13 @@ const AddPersonForm = ({ onSubmit, onCancel, taskData } : Props ) => {
         <Select
           mode='multiple'
           allowClear
+          optionFilterProp='children'
           placeholder="select tasks"
           onChange={handleTaskSelection}
+          filterOption={(input, option) =>  
+            option?.children.join('').toLowerCase().indexOf(input.toLowerCase()) >= 0 
+          }
+
         >
           {
             taskData.map((task)=> (

@@ -42,8 +42,8 @@ export interface Task {
     name: string;
     category: string;
     schedule: Schedule;
-    people?: Person[];
-    time?: number;
+    people: PersonMinimized[];
+    time: number;
 }
 
 export interface DayOff {
@@ -57,12 +57,30 @@ export interface Name {
     last: string
 }
 
+// This is the task object that is stored in each person field 'tasks' 
+// I populate this using mongoose in the backend. If I change that population,
+// I should change this type to match it.
+export interface TaskMinimized {
+    id: string,
+    name: string
+}
+
+// Similar to TaskMinimized, this is the populate object stored within the 
+// Task field 'People' - if I change how I populated I should change this type as well.
+export interface PersonMinimized {
+    id: string,
+    name: Name,
+    schedule: Day[],
+    tasks: string[] //for each person stored in the task Object, the tasks are just stored as object id's
+    daysOff: DayOff[],
+}
+
 export interface Person {
     id: string;
     name: Name;
     schedule: Day[];
-    tasks: Task[];
-    daysOff?: DayOff[];
+    tasks: TaskMinimized[];
+    daysOff: DayOff[];
 }
 
 // Person field with tasks omitted

@@ -12,5 +12,9 @@ export const nameRules : Rule[] = [
     {
       max: 20,
       message: 'name is too long'
+    },
+    {
+        whitespace: true,
+        message: 'name must contain characters'
     }
 ]

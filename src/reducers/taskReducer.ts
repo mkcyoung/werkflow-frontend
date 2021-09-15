@@ -18,13 +18,15 @@ const taskReducer = (state = [], action: PayloadAction<Task[] | Person>) => {
     switch (action.type){
         case 'GET_TASKS':
             return action.payload
+        // when a person is added, I need to add that person to the tasks that that person is trained on
         case 'UPDATE_TASK_PEOPLE':{
             const person = action.payload as Person
             const personTasks = person.tasks.map(task => task.id )
             const updatedTasks : Task[] = state.map( (task : Task)  => {
                 if(personTasks.includes(task.id)){
                     task.people = task.people?.concat({
-                        ...person
+                        ...person,
+                        tasks: personTasks
                     })
                 }
                 return task
