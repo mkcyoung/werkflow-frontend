@@ -21,7 +21,7 @@ const { Title } = Typography
 
 interface Props {
   onSubmit: (values: PersonFormValues) => Promise<void>;
-  onCancel: () => void;
+  onCancel: (modalType : 'person' | 'task') => void;
   taskData: Task[]
 }
 

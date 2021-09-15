@@ -11,13 +11,19 @@ import { Task, Person, PersonFormValues } from './types'
 
 import DropDown from './components/DropDown'
 import AddPersonModal from "./components/AddPersonModal";
+// import AddTaskModal from "./components/AddTaskModal";
 import { Button } from 'antd';
 
 const App = () => {
 
   const dispatch = useDispatch()
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const modalState = {
+    person: false,
+    task: false
+  }
+
+  const [modalOpen, setModalOpen] = useState(modalState);
   const [error, setError] = useState<string | undefined>();
 
   // initalize tasks & people
@@ -43,25 +49,38 @@ const App = () => {
     closeModal();
   }
 
-  const openModal = (): void => setModalOpen(true);
+  const openModal = (modalType : 'person' | 'task'): void => {
+    modalState[modalType] = true
+    setModalOpen(modalState)
+  }
 
   const closeModal = (): void => {
-    setModalOpen(false);
+    modalState['person'] = false
+    modalState['task'] = false
+    setModalOpen(modalState);
     setError(undefined);
 
-  };
+  }
 
 
   return (
     <div className="App">
       <AddPersonModal
-        modalOpen={modalOpen}
+        modalOpen={modalOpen['person']}
         onSubmit={submitNewPerson}
         error={error}
         onClose={closeModal}
         taskData={tasks} // this might not work well, may need to move fetching tasks to the actual modal form?
       />
-      <Button onClick={() => openModal()}> add person </Button>
+      {/* <AddTaskModal
+        modalOpen={modalOpen['task']}
+        onSubmit={submitNewPerson}
+        error={error}
+        onClose={closeModal('task')}
+        peopleData={people} // this might not work well, may need to move fetching tasks to the actual modal form?
+      /> */}
+      <Button onClick={() => openModal('person')}> add person </Button>
+      <Button onClick={() => openModal('task')}> add task </Button>
       {/* <ul>
         {tasks.map((task) => <DropDown key={task.id} task={task} /> )}
       </ul> */}
