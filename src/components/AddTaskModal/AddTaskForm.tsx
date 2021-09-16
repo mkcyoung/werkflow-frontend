@@ -61,11 +61,14 @@ const daySelections = {
   'saturday': false
 }
 
+// let daysDeleted = 0
+
 const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
   const [form] = Form.useForm();
   const [availableDays, setDays] = useState(dayOptions)
   const [radioValue, setRadio] = useState('full')
   const [daySelection, setDaySelection] = useState(daySelections)
+  // const [daysDeleted, setDaysDeleted] = useState(0)
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -82,7 +85,14 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
     })
     // console.log(updateDaySelection)
     setDaySelection(updateDaySelection)
+    console.log(form.getFieldsValue())
   }
+
+  // const removeDay = (name: any,remove: any) => {
+  //   // setDaysDeleted(daysDeleted + 1)
+  //   daysDeleted += 1
+  //   remove(name)
+  // }
 
   // const handleTimeSelection = (time : any, timeString : string[]) => {
   //   console.log(time, timeString)
@@ -106,13 +116,13 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
       initialValues={{
         name: undefined,
         category: undefined,
-        schedule: [
-          {
-            day: undefined,
-            fullDay: true,
+        // schedule: [
+        //   {
+        //     day: undefined,
+        //     fullDay: true,
 
-          }
-        ],
+        //   }
+        // ],
       }}
       layout="horizontal"
       // requiredMark={'optional'}
@@ -190,9 +200,23 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
       // wrapperCol={{ span: 14, offset: 5}}
       > 
         <Form.List name="schedule">
-          {(fields, { add, remove }) => (
+          {(fields, { add, remove }) => {
+            console.log("in form list: ",fields)
+            // readjusts fields keys incase there have been deletions
+            fields = fields.map(({ key, fieldKey, ...restField }, index) => {
+              return {
+                ...restField,
+                key: index,
+                fieldKey: index
+              }
+            })
+            return(
             <>
-              {fields.map(({ key, name, fieldKey, ...restField }) => (
+              {fields.map(({ key, name, fieldKey, ...restField }) => {
+                // need to update the key when I choose to delete fields
+                // key = key - daysDeleted
+                // fieldKey = fieldKey - daysDeleted
+                return (
                 <Space key={key} align="baseline">
                   <Form.Item
                     // label='day'
@@ -218,8 +242,10 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                     noStyle
                     shouldUpdate={(prevValues, currentValues) => prevValues.schedule.length <= currentValues.schedule.length ? true : false }
                   >
-                    {({ getFieldValue }) => 
-                      getFieldValue(['schedule'])[key]?.day ? (
+                    {({ getFieldValue }) => {
+                      console.log("in get field value for radio: ",getFieldValue(['schedule'])[key])
+                      console.log(`key: ${key} fieldKey: ${fieldKey}`)
+                      return getFieldValue(['schedule'])[key]?.day ? (
                         <Form.Item
                           name={[name,'fullDay']}
                           >
@@ -229,7 +255,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                           </Radio.Group>
                         </Form.Item>
                       ) : null
-                    }
+                    }}
                   </Form.Item>
                   <Form.Item
                     noStyle
@@ -272,7 +298,8 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                 </Form.Item>
                 <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => remove(name)} />
                 </Space>
-              ))}
+              )}
+              )}
               <Form.Item
               shouldUpdate>
               {({ getFieldValue }) =>
@@ -288,6 +315,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
               </Form.Item>
             </>
           )}
+          }
         </Form.List>
       </Form.Item>
       <Divider>
