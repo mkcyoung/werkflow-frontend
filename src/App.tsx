@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useDispatch } from 'react-redux'
-import { useAppSelector } from './types';
 
 
 import { getTasks } from './reducers/taskReducer'
 import { getPeople, addPerson } from './reducers/peopleReducer'
 
-import { Task, Person, PersonFormValues } from './types'
+import { Task, Person, PersonFormValues, TaskFormValues, useAppSelector } from './types'
 
 import DropDown from './components/DropDown'
 import AddPersonModal from "./components/AddPersonModal";
-// import AddTaskModal from "./components/AddTaskModal";
+import AddTaskModal from "./components/AddTaskModal";
 import { Button } from 'antd';
 
 const App = () => {
@@ -49,6 +48,11 @@ const App = () => {
     closeModal();
   }
 
+  const submitNewTask = async (values: TaskFormValues) => {
+    console.log("submitted task: ", values)
+    closeModal();
+  }
+
   const openModal = (modalType : 'person' | 'task'): void => {
     modalState[modalType] = true
     setModalOpen(modalState)
@@ -72,13 +76,13 @@ const App = () => {
         onClose={closeModal}
         taskData={tasks} // this might not work well, may need to move fetching tasks to the actual modal form?
       />
-      {/* <AddTaskModal
+      <AddTaskModal
         modalOpen={modalOpen['task']}
-        onSubmit={submitNewPerson}
+        onSubmit={submitNewTask}
         error={error}
-        onClose={closeModal('task')}
+        onClose={closeModal}
         peopleData={people} // this might not work well, may need to move fetching tasks to the actual modal form?
-      /> */}
+      />
       <Button onClick={() => openModal('person')}> add person </Button>
       <Button onClick={() => openModal('task')}> add task </Button>
       {/* <ul>

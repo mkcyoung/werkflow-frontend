@@ -93,3 +93,10 @@ export interface PersonFormValues {
     schedule: Day[];
     tasks: string[]
 }
+
+export interface TaskFormValues {
+    name: string;
+    category: string;
+    // schedule: Day[];
+    // tasks: string[]
+}
