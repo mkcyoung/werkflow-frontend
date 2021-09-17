@@ -276,20 +276,20 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                                 return (
                                   <>
                                     {subFields.map((subField, index) => {
-                                      // { key, name, fieldKey, ...restField }
+                                      
                                       return (
                                         <Form.Item
+                                        {...subField}
                                         key={subField.key}
-                                        // {...restField}
-                                        name={[`task-${index}`]}
-                                        // fieldKey={[fieldKey, subField.fieldKey, `task-${index}`]}
-                                        rules={[{ required: true, message: 'missing time' }]}
+                                        name={[subField.name, 'time']}
+                                        fieldKey={[fieldKey, subField.fieldKey]}
+                                        // rules={[{ required: true, message: 'missing time' }]}
                                         >
                                           <Space align="baseline" >
                                             <Form.Item
-                                              // {...restField}
-                                              name={[`task-${index}`, 'time', 'start']}
-                                              // fieldKey={[fieldKey, subField.fieldKey, 'start']}
+                                              {...subField}
+                                              name={[subField.name, 'time', 'start']}
+                                              fieldKey={[fieldKey, subField.fieldKey, 'start']}
                                               rules={[{ required: true, message: 'please select start time for task.' }]}
                                             >
                                               <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
