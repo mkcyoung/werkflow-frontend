@@ -86,7 +86,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
     // })
     // console.log(updateDaySelection)
     // setDaySelection(updateDaySelection)
-    // console.log(form.getFieldsValue())
+    console.log('ALL FIELDS: ',form.getFieldsValue())
   }
 
 
@@ -199,14 +199,14 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
           {(fields, { add, remove }) => {
             console.log("in form list: ",fields)
             // readjusts fields keys incase there have been deletions
-            fields = fields.map(({ key, fieldKey, ...restField }, index) => {
+            fields = fields.map(({ ...restField }, index) => {
               return {
                 ...restField,
                 key: index,
                 fieldKey: index
               }
             })
-            return(
+            return (
             <>
               {fields.map(({ key, name, fieldKey, ...restField }) => {
                 // need to update the key when I choose to delete fields
@@ -265,41 +265,114 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                   >
                     {({ getFieldValue }) => {
                       if (getFieldValue(['schedule'])[key]?.day) {
-                        console.log(getFieldValue(['schedule']))
+                        // console.log(getFieldValue(['schedule']))
                         return getFieldValue(['schedule'])[key].fullDay === false ? (
-                          <Form.Item 
-                          label='time'
-                          labelCol={{ span: 4, offset: 0 }}
-                          // wrapperCol={{ span: 14 }}
-                        >
-                          <Space align="baseline" >
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'time', 'start']}
-                              fieldKey={[fieldKey, 'start']}
-                              rules={[{ required: true, message: 'please select start time.' }]}
+                          <>
+                            <Form.List 
+                            name={[name,'subTasks']}
                             >
-                              <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
-                            </Form.Item>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'time', 'end']}
-                              fieldKey={[fieldKey, 'end']}
-                              rules={[{ required: true, message: 'please select end time' }]}
-                            >
-                              <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
-                            </Form.Item>
-                          </Space>
-                        </Form.Item> ):
+                              {(subFields, subTaskFns ) => {
+                                console.log("in subtasks list",subFields)
+                                return (
+                                  <>
+                                    {subFields.map((subField, index) => {
+                                      // { key, name, fieldKey, ...restField }
+                                      return (
+                                        <Form.Item
+                                        key={subField.key}
+                                        // {...restField}
+                                        name={[`task-${index}`]}
+                                        // fieldKey={[fieldKey, subField.fieldKey, `task-${index}`]}
+                                        rules={[{ required: true, message: 'missing time' }]}
+                                        >
+                                          <Space align="baseline" >
+                                            <Form.Item
+                                              // {...restField}
+                                              name={[`task-${index}`, 'time', 'start']}
+                                              // fieldKey={[fieldKey, subField.fieldKey, 'start']}
+                                              rules={[{ required: true, message: 'please select start time for task.' }]}
+                                            >
+                                              <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
+                                            </Form.Item>
+                                            {/* <Form.Item
+                                              // {...restField}
+                                              name={[name, 'subtasks', 'time', 'end']}
+                                              fieldKey={[fieldKey, 'end']}
+                                              rules={[{ required: true, message: 'please select end time for task' }]}
+                                            >
+                                              <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
+                                            </Form.Item> */}
+                                          </Space>
+                                        </Form.Item>
+                                        )
+                                      })
+                                    }
+                                    <Form.Item
+                                      wrapperCol={{span:10, offset:7}}
+                                      shouldUpdate
+                                    >
+                                      {({ getFieldValue }) =>
+                                        !getFieldValue(['schedule']) || getFieldValue(['schedule'])?.length < 7 ? (
+                                                <Form.Item
+                                                wrapperCol={{ span: 14, offset: 5 }}
+                                                style={{marginTop: 8}}>
+                                                <Button type="dashed" shape='round' onClick={() => subTaskFns.add()} block icon={<PlusOutlined />}>
+                                                  add time
+                                                </Button>
+                                              </Form.Item>
+                                              ) : null
+                                        }
+                                    </Form.Item>   
+                                  </>                            
+                                )}
+                              }
+
+                            </Form.List>
+                              {/* <Form.Item
+                                wrapperCol={{span:10, offset:7}}
+                                shouldUpdate
+                              >
+                                {({ getFieldValue }) =>
+                                  !getFieldValue(['schedule']) || getFieldValue(['schedule'])?.length < 7 ? (
+                                          <Form.Item
+                                          wrapperCol={{ span: 14, offset: 5 }}
+                                          style={{marginTop: 8}}>
+                                          <Button type="dashed" shape='round' onClick={() => add()} block icon={<PlusOutlined />}>
+                                            add time
+                                          </Button>
+                                        </Form.Item>
+                                        ) : null
+                                  }
+                              </Form.Item> */}
+                              {/* <Space align="baseline" >
+                                <Form.Item
+                                  {...restField}
+                                  name={[name, 'time', 'start']}
+                                  fieldKey={[fieldKey, 'start']}
+                                  rules={[{ required: true, message: 'please select start time.' }]}
+                                >
+                                  <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
+                                </Form.Item>
+                                <Form.Item
+                                  {...restField}
+                                  name={[name, 'time', 'end']}
+                                  fieldKey={[fieldKey, 'end']}
+                                  rules={[{ required: true, message: 'please select end time' }]}
+                                >
+                                  <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
+                                </Form.Item>
+                              </Space> */}
+                          </> 
+                        ):
                         null
                       } else {
                         return null
                       }
                     }
                   }
-                </Form.Item>
-                
-                
+
+
+                  </Form.Item>
                 </Card>
                 // </Col>
                 // </Row>
