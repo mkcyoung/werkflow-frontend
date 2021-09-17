@@ -12,7 +12,8 @@ import {
   Typography,
   Divider,
   message,
-  Radio
+  Radio,
+  Card
 } from 'antd'
 import { nameRules } from './validationRules';
 import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
@@ -66,8 +67,8 @@ const daySelections = {
 const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
   const [form] = Form.useForm();
   const [availableDays, setDays] = useState(dayOptions)
-  const [radioValue, setRadio] = useState('full')
-  const [daySelection, setDaySelection] = useState(daySelections)
+  // const [radioValue, setRadio] = useState('full')
+  // const [daySelection, setDaySelection] = useState(daySelections)
   // const [daysDeleted, setDaysDeleted] = useState(0)
 
   const onFinishFailed = (errorInfo: any) => {
@@ -79,20 +80,15 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
     const selectedDays = form.getFieldsValue().schedule.map((day:any)=> day ? day.day : '')
     // console.log(selectedDays)
     setDays(dayOptions.filter((dayObj)=> !selectedDays.includes(dayObj.value) ))
-    const updateDaySelection = {...daySelections}
-    selectedDays.forEach((day: WeekDay) => {
-      updateDaySelection[day] = true
-    })
+    // const updateDaySelection = {...daySelections}
+    // selectedDays.forEach((day: WeekDay) => {
+    //   updateDaySelection[day] = true
+    // })
     // console.log(updateDaySelection)
-    setDaySelection(updateDaySelection)
-    console.log(form.getFieldsValue())
+    // setDaySelection(updateDaySelection)
+    // console.log(form.getFieldsValue())
   }
 
-  // const removeDay = (name: any,remove: any) => {
-  //   // setDaysDeleted(daysDeleted + 1)
-  //   daysDeleted += 1
-  //   remove(name)
-  // }
 
   // const handleTimeSelection = (time : any, timeString : string[]) => {
   //   console.log(time, timeString)
@@ -197,7 +193,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
 
       <Form.Item
       // labelCol={{ span: 3, offset: 4}}
-      // wrapperCol={{ span: 14, offset: 5}}
+      wrapperCol={{ span: 16, offset: 4}}
       > 
         <Form.List name="schedule">
           {(fields, { add, remove }) => {
@@ -217,7 +213,11 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                 // key = key - daysDeleted
                 // fieldKey = fieldKey - daysDeleted
                 return (
-                <Space key={key} align="baseline">
+                // <Space key={key} >
+                  // <Row key={key} justify='center'>
+                  //   <Col span={15} >
+                <Card key ={key} style={{ margin: 8 }}>
+                  <Space align='baseline'>
                   <Form.Item
                     // label='day'
                     {...restField}
@@ -251,12 +251,14 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                           >
                           <Radio.Group name='radioGroup' onChange={handleRadioChange} value={true} >
                             <Radio value={true}>full day</Radio>
-                            <Radio value={false}>set time</Radio>
+                            <Radio value={false}>set time(s)</Radio>
                           </Radio.Group>
                         </Form.Item>
                       ) : null
                     }}
                   </Form.Item>
+                  <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => remove(name)} />
+                  </Space>
                   <Form.Item
                     noStyle
                     shouldUpdate
@@ -270,7 +272,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                           labelCol={{ span: 4, offset: 0 }}
                           // wrapperCol={{ span: 14 }}
                         >
-                          <Space align="baseline">
+                          <Space align="baseline" >
                             <Form.Item
                               {...restField}
                               name={[name, 'time', 'start']}
@@ -296,8 +298,13 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                     }
                   }
                 </Form.Item>
-                <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => remove(name)} />
-                </Space>
+                
+                
+                </Card>
+                // </Col>
+                // </Row>
+                // </Space>
+
               )}
               )}
               <Form.Item
@@ -305,7 +312,8 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
               {({ getFieldValue }) =>
                 !getFieldValue(['schedule']) || getFieldValue(['schedule'])?.length < 7 ? (
                         <Form.Item
-                        wrapperCol={{ span: 14, offset: 5 }}>
+                        wrapperCol={{ span: 14, offset: 5 }}
+                        style={{marginTop: 8}}>
                         <Button type="dashed" shape='round' onClick={() => add()} block icon={<PlusOutlined />}>
                           add day
                         </Button>
