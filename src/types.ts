@@ -27,23 +27,33 @@ export interface Day {
 //     saturday: Day;
 // }
 
-export interface Schedule {
-    sunday: string[];
-    monday: string[];
-    tuesday: string[];
-    wednesday: string[];
-    thursday: string[];
-    friday: string[];
-    saturday: string[];
+// export interface Schedule {
+//     sunday: string[];
+//     monday: string[];
+//     tuesday: string[];
+//     wednesday: string[];
+//     thursday: string[];
+//     friday: string[];
+//     saturday: string[];
+// }
+
+export interface Subtask {
+    start: string,
+    end: string
+}
+
+export interface TaskDay {
+    fullDay: boolean,
+    subtasks?: Subtask[] | null
 }
 
 export interface Task {
     id: string;
     name: string;
     category: string;
-    schedule: Schedule;
+    schedule: TaskDay;
     people: PersonMinimized[];
-    time: number;
+    taskTime: number;
 }
 
 export interface DayOff {
@@ -97,6 +107,7 @@ export interface PersonFormValues {
 export interface TaskFormValues {
     name: string;
     category: string;
-    // schedule: Day[];
-    // tasks: string[]
+    schedule: TaskDay;
+    people: string[];
+    taskTime: number;
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useDispatch } from 'react-redux'
 
 
-import { getTasks } from './reducers/taskReducer'
+import { getTasks, addTask } from './reducers/taskReducer'
 import { getPeople, addPerson } from './reducers/peopleReducer'
 
 import { Task, Person, PersonFormValues, TaskFormValues, useAppSelector } from './types'
@@ -50,6 +50,7 @@ const App = () => {
 
   const submitNewTask = async (values: TaskFormValues) => {
     console.log("submitted task: ", values)
+    dispatch(addTask(values))
     closeModal();
   }
 

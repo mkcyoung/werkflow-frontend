@@ -75,14 +75,14 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData, taskData } : Props ) => {
   const [form] = Form.useForm();
   const [availableDays, setDays] = useState(dayOptions)
   // Set up task categories
-  const taskCategories = taskData
+  const taskCategories = taskData.length > 0 ? taskData
                           .map(task => task.category)
                           .filter(onlyUnique)
                           .map(task => {
                             return {
                               value: task
                             }
-                          })
+                          }) : [{value: ''}]
   // const [newCategoryName, setNewCategoryName] = useState('')
   // const [radioValue, setRadio] = useState('full')
   // const [daySelection, setDaySelection] = useState(daySelections)
@@ -97,6 +97,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData, taskData } : Props ) => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
+    errorMessage(errorInfo)
   };
 
   const handleDaySelection = (value: WeekDay) => {
@@ -293,6 +294,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData, taskData } : Props ) => {
                       return getFieldValue(['schedule'])[key]?.day ? (
                         <Form.Item
                           name={[name,'fullDay']}
+                          required
                           >
                           <Radio.Group name='radioGroup' onChange={handleRadioChange} value={true} >
                             <Radio value={true}>full day</Radio>
