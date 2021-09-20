@@ -13,18 +13,21 @@ import {
   Divider,
   message,
   Radio,
-  Card
+  Card,
+  InputNumber,
+  AutoComplete
 } from 'antd'
 import { nameRules } from './validationRules';
-import { MinusCircleTwoTone, PlusOutlined } from '@ant-design/icons';
-import { Person, TaskFormValues, WeekDay } from '../../types';
+import { MinusCircleTwoTone, PlusOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Person, TaskFormValues, WeekDay, Task } from '../../types';
 const { Option } = Select;
 const { Title } = Typography
 
 interface Props {
   onSubmit: (values: TaskFormValues) => Promise<void>;
   onCancel: (modalType : 'person' | 'task') => void;
-  peopleData: Person[]
+  peopleData: Person[];
+  taskData: Task[];
 }
 
 const errorMessage = (error : string) => {
@@ -62,14 +65,35 @@ const daySelections = {
   'saturday': false
 }
 
+const onlyUnique = (value: any, index: any, self: any) => {
+  return self.indexOf(value) === index;
+}
+
 // let daysDeleted = 0
 
-const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
+const AddTaskForm = ({ onSubmit, onCancel, peopleData, taskData } : Props ) => {
   const [form] = Form.useForm();
   const [availableDays, setDays] = useState(dayOptions)
+  // Set up task categories
+  const taskCategories = taskData
+                          .map(task => task.category)
+                          .filter(onlyUnique)
+                          .map(task => {
+                            return {
+                              value: task
+                            }
+                          })
+  // const [newCategoryName, setNewCategoryName] = useState('')
   // const [radioValue, setRadio] = useState('full')
   // const [daySelection, setDaySelection] = useState(daySelections)
   // const [daysDeleted, setDaysDeleted] = useState(0)
+
+  // const addNewCategory = (newCat: string) => {
+  //   console.log("add new cat: ",newCat)
+  //   setCategories(taskCategories.concat(newCat).filter(onlyUnique))
+  // }
+
+  // const onCatChange = (event : any) => setNewCategoryName(event.target.value)
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
@@ -170,7 +194,8 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
             name='name'
             required
             hasFeedback
-            // tooltip="This is a required field"
+            // label
+            // tooltip="enter the name of the task"
             rules={nameRules}
           >
             <Input placeholder='task name'/>
@@ -179,21 +204,32 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
       <Divider>
         <Title level={2} > task category </Title>
       </Divider>
+      <Form.Item
+        wrapperCol={{ span: 6, offset: 9 }}
+        name='category'
+      >
+        <AutoComplete
+          options={taskCategories}
+          placeholder='enter task category'
+          filterOption={(inputValue, option) =>
+            option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          }
+        />
+      </Form.Item>
+      <Divider>
+        <Title level={2}> task time </Title>
+      </Divider>
       <Form.Item 
       // label='name'
       // labelCol={{ span: 4, offset: 3 }}
-      wrapperCol={{ span: 6, offset: 9 }}>
-          <Form.Item
-            // validateTrigger="onBlur"
-            name='category'
-            required
-            hasFeedback
-            // tooltip="This is a required field"
-            rules={nameRules}
-          >
-            <Input placeholder='task category'/>
-          </Form.Item>
+      wrapperCol={{ span: 6, offset: 9 }}
+      name='taskTime'
+      required
+      hasFeedback
+      >
+        <InputNumber min={0} placeholder='# hours task typically takes'/>
       </Form.Item>
+
       <Divider>
         <Title level={2}> weekly schedule </Title>
       </Divider>
@@ -336,40 +372,6 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                               }
 
                             </Form.List>
-                              {/* <Form.Item
-                                wrapperCol={{span:10, offset:7}}
-                                shouldUpdate
-                              >
-                                {({ getFieldValue }) =>
-                                  !getFieldValue(['schedule']) || getFieldValue(['schedule'])?.length < 7 ? (
-                                          <Form.Item
-                                          wrapperCol={{ span: 14, offset: 5 }}
-                                          style={{marginTop: 8}}>
-                                          <Button type="dashed" shape='round' onClick={() => add()} block icon={<PlusOutlined />}>
-                                            add time
-                                          </Button>
-                                        </Form.Item>
-                                        ) : null
-                                  }
-                              </Form.Item> */}
-                              {/* <Space align="baseline" >
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, 'time', 'start']}
-                                  fieldKey={[fieldKey, 'start']}
-                                  rules={[{ required: true, message: 'please select start time.' }]}
-                                >
-                                  <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
-                                </Form.Item>
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, 'time', 'end']}
-                                  fieldKey={[fieldKey, 'end']}
-                                  rules={[{ required: true, message: 'please select end time' }]}
-                                >
-                                  <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
-                                </Form.Item>
-                              </Space> */}
                           </> 
                         ):
                         null
@@ -378,13 +380,8 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                       }
                     }
                   }
-
-
                   </Form.Item>
                 </Card>
-                // </Col>
-                // </Row>
-                // </Space>
 
               )}
               )}
@@ -412,7 +409,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
       </Divider>
       <Form.Item
         wrapperCol={{ span: 14, offset: 5 }}
-        name={'tasks'}
+        name='people'
       >
         <Select
           mode='multiple'

@@ -82,6 +82,7 @@ const App = () => {
         error={error}
         onClose={closeModal}
         peopleData={people} // this might not work well, may need to move fetching tasks to the actual modal form?
+        taskData={tasks}
       />
       <Button onClick={() => openModal('person')}> add person </Button>
       <Button onClick={() => openModal('task')}> add task </Button>

@@ -3,7 +3,7 @@ import { Rule } from 'antd/lib/form'
 export const nameRules : Rule[] = [
     { 
       required: true,
-      message: 'name required'
+      message: 'required'
     },
     {
       max: 20,
