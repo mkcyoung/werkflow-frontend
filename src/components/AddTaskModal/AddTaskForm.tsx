@@ -157,27 +157,29 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData, taskData } : Props ) => {
             // same shape as initial values
             // console.log(fieldsValues);
             // if(!fieldsValues.schedule || fieldsValues.schedule.length === 0){
-            //   errorMessage('must enter a schedule')
+            //   errorMessage('must enter a schedule for task')
             //   throw new Error('must enter schedule')
               
             // }
-            console.log(fieldsValues)
+            // console.log(fieldsValues)
             const values : TaskFormValues = {
               ...fieldsValues,
-              'name': fieldsValues.name.trim().toLowerCase(),
-              'category': fieldsValues.category.trim().toLowerCase()
-              // 'schedule': fieldsValues.schedule.map((day: any) => {
-              //   return {
-              //     ...day,
-              //     time: {
-              //       start: day.time.start.format('HH:mm'),
-              //       end: day.time.end.format('HH:mm'),
-              //     }
-              //   }
-              // })
+              'name': fieldsValues.name.trim(),
+              'category': fieldsValues.category.trim(),
+              'schedule': !Array.isArray(fieldsValues.schedule) ? null : fieldsValues.schedule.map((day: any) => {
+                return {
+                  ...day,
+                  subTasks: day.fullDay ? null : day.subTasks.map((subtask: any) => {
+                    return {
+                      start: subtask.time.start.format('HH:mm'),
+                      end: subtask.time.end.format('HH:mm'),
+                    }
+                  })
+                }
+              })
             }
 
-            console.log(values)
+            // console.log(values)
             onSubmit(values)
       }}
       onFinishFailed={onFinishFailed}
