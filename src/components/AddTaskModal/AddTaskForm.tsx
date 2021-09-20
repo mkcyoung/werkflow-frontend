@@ -93,9 +93,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
     remove(name)
     // Update available days when we remove a day
     const selectedDays = form.getFieldsValue().schedule.map((day:any)=> day ? day.day : '')
-    // console.log(selectedDays)
     setDays(dayOptions.filter((dayObj)=> !selectedDays.includes(dayObj.value) ))
-    
   }
 
 
@@ -311,6 +309,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                                             >
                                               <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
                                             </Form.Item>
+                                            <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => subTaskFns.remove(subField.name)} />
                                           </Space>
                                         </Form.Item>
                                         )
