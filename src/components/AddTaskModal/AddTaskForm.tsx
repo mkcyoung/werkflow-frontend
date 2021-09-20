@@ -89,6 +89,15 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
     console.log('ALL FIELDS: ',form.getFieldsValue())
   }
 
+  const removeDay = (name: any, remove: any) => {
+    remove(name)
+    // Update available days when we remove a day
+    const selectedDays = form.getFieldsValue().schedule.map((day:any)=> day ? day.day : '')
+    // console.log(selectedDays)
+    setDays(dayOptions.filter((dayObj)=> !selectedDays.includes(dayObj.value) ))
+    
+  }
+
 
   // const handleTimeSelection = (time : any, timeString : string[]) => {
   //   console.log(time, timeString)
@@ -257,7 +266,7 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                       ) : null
                     }}
                   </Form.Item>
-                  <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => remove(name)} />
+                  <MinusCircleTwoTone twoToneColor="#eb2f96" onClick={() => removeDay(name,remove)} />
                   </Space>
                   <Form.Item
                     noStyle
@@ -294,14 +303,14 @@ const AddTaskForm = ({ onSubmit, onCancel, peopleData } : Props ) => {
                                             >
                                               <TimePicker placeholder='start time' minuteStep={5} showNow={false} use12Hours format='h:mm a'/>
                                             </Form.Item>
-                                            {/* <Form.Item
-                                              // {...restField}
-                                              name={[name, 'subtasks', 'time', 'end']}
-                                              fieldKey={[fieldKey, 'end']}
+                                            <Form.Item
+                                              {...subField}
+                                              name={[subField.name,'time', 'end']}
+                                              fieldKey={[fieldKey, subField.fieldKey, 'end']}
                                               rules={[{ required: true, message: 'please select end time for task' }]}
                                             >
                                               <TimePicker placeholder='end time' use12Hours minuteStep={5} showNow={false} format='h:mm a'/>
-                                            </Form.Item> */}
+                                            </Form.Item>
                                           </Space>
                                         </Form.Item>
                                         )
