@@ -56,14 +56,19 @@ const Schedule = ({taskData} : Props ) => {
                 <Grid container item spacing={1} columns={7}>
                     {
                         taskCategories.map((category) => (
-                            <Grid key={category} container item spacing={1} xs={7}>
-                                <Item> {category}</Item>
+                            <Grid key={category} container item spacing={1}>
+                                <Grid item xs={7}> 
+                                    <Item> {category}</Item>
+                                </Grid>
                                 {
-                                    weekDays.map((day) => (
+                                    weekDays.map((day) => {
+                                        // const tasksOnDay = 
+                                        return (
                                         <Grid item key={day} xs={1}>
                                             <Item>{day}</Item>
                                         </Grid>
-                                    ))
+                                        )}
+                                    )
                                 }
                             </Grid>
                         ))
