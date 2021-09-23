@@ -11,6 +11,7 @@ import { Task, Person, PersonFormValues, TaskFormValues, useAppSelector } from '
 import DropDown from './components/DropDown'
 import AddPersonModal from "./components/AddPersonModal";
 import AddTaskModal from "./components/AddTaskModal";
+import Schedule from "./components/Schedule";
 import { Button } from 'antd';
 
 const App = () => {
@@ -70,7 +71,8 @@ const App = () => {
 
   return (
     <div className="App">
-      <AddPersonModal
+      <Schedule taskData={tasks}/>
+      {/* <AddPersonModal
         modalOpen={modalOpen['person']}
         onSubmit={submitNewPerson}
         error={error}
@@ -86,7 +88,7 @@ const App = () => {
         taskData={tasks}
       />
       <Button onClick={() => openModal('person')}> add person </Button>
-      <Button onClick={() => openModal('task')}> add task </Button>
+      <Button onClick={() => openModal('task')}> add task </Button> */}
       {/* <ul>
         {tasks.map((task) => <DropDown key={task.id} task={task} /> )}
       </ul> */}

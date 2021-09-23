@@ -26,28 +26,5 @@ const AddTaskModal = ({ modalOpen, onClose, onSubmit, error, peopleData, taskDat
     </Modal>
 );
 
-// const errorMessage = (error : string) => {
-//     message.error(`Error: ${error}`, 5)
-// }
-
-// const AddPersonModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
-//     <Modal
-//         visible={modalOpen}
-//         onOk={onSubmit}
-//         onCancel={onClose}
-//         footer={[
-//             <Button key="cancel" danger={true} shape='round' onClick={onClose}>
-//                 cancel
-//             </Button>,
-//             <Button key='submit' type='primary' shape='round' onClick={onSubmit}>
-//                 submit
-//             </Button>
-//         ]}
-//     >
-//         {error && errorMessage(error)}
-//         <AddPersonForm onSubmit={onSubmit} onCancel={onClose}></AddPersonForm>
-//     </Modal>
-// )
-
 export default AddTaskModal
 
