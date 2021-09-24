@@ -37,14 +37,14 @@ const WeeklyCalendar = ({date, onChange} : Props) => {
 
     return (
         <Box sx={{width: '90%', margin: '0 auto', flexGrow: 1 }}>
-            <Grid container>
+            <Grid container >
                 <Grid item xs={6}>
                     <Typography variant="h2" component="div" gutterBottom>
                         {format(date,'MMMM y')}
                     </Typography>
                 </Grid>
                 
-                <Grid item xs={6} >
+                <Grid item sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} xs={6} >
                     <ButtonGroup >
                         <Button key='left' onClick={() => onChange(sub(date, {weeks: 1}))} > <ChevronLeftRounded/> </Button>
                         <Button key='today' onClick={() => onChange(new Date())} > today </Button>
