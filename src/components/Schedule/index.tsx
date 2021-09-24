@@ -29,20 +29,11 @@ interface Props {
     taskData: Task[]
 }
 
-const onlyUnique = (value: any, index: any, self: any) => {
-    return self.indexOf(value) === index;
-}
-
 const Schedule = ({taskData} : Props ) => {
     const [date, setDate] = useState(new Date())
 
-
-    const taskCategories = taskData.length > 0 ? taskData
-        .map(task => task.category)
-        .filter(onlyUnique) : []
-
     return (
-        <WeeklyCalendar date={date} onChange={(newDate) => setDate(newDate)}/>
+        <WeeklyCalendar taskData={taskData} date={date} onChange={(newDate) => setDate(newDate)}/>
         // <Container sx={{ bgcolor: '#cfe8fc' }}>
         // <Box sx={{ flexGrow: 1 }}>
         //     <Grid container style={{width: '90%', margin: '0 auto' }} spacing={1} >

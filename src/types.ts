@@ -8,7 +8,7 @@ export interface PersonHours {
     end: string;
 }
 
-export type WeekDay = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday'
+export type WeekDay = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | string
 
 export interface Day {
     // date: Date;
@@ -43,6 +43,7 @@ export interface SubTask {
 }
 
 export interface TaskDay {
+    day: WeekDay,
     fullDay: boolean,
     subTasks?: SubTask[] | null
 }
@@ -51,7 +52,7 @@ export interface Task {
     id: string;
     name: string;
     category: string;
-    schedule: TaskDay;
+    schedule: TaskDay[];
     people: PersonMinimized[];
     taskTime: number;
 }
@@ -107,7 +108,7 @@ export interface PersonFormValues {
 export interface TaskFormValues {
     name: string;
     category: string;
-    schedule: TaskDay;
+    schedule: TaskDay[];
     people: string[];
     taskTime: number;
 }
