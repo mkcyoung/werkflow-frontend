@@ -111,3 +111,9 @@ export interface TaskFormValues {
     people: string[];
     taskTime: number;
 }
+
+export type WeekDayObj = {
+    formatted: string;
+    date: Date;
+    day: number;
+  };
