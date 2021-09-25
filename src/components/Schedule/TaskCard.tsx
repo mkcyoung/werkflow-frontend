@@ -34,9 +34,9 @@ const TaskCard = ({task, weekDay} : Props) => {
                                 return (
                                     <Autocomplete
                                         multiple
-                                        key={index}
+                                        key={`${weekDay.formatted}-${weekDay.day}-${subTask.taskName}`}
                                         size='small'
-                                        id={`${weekDay.formatted}-subTask.taskName`}
+                                        id={`${weekDay.formatted}-${weekDay.day}-${subTask.taskName}`}
                                         freeSolo
                                         options={peopleOnDay.map((person: any) => person.name.first)}
                                         // getOptionLabel={(person: any) => person.name.first}
