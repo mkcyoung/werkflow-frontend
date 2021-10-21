@@ -9,12 +9,21 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { WeekDayObj } from '../../types';
+import { styled } from "@mui/material/styles";
+
+const CardContentPadding = styled(CardContent)(`
+  padding: 10px;
+  &:last-child {
+    padding-bottom: 10px;
+  }
+`);
 
 type Props = {
     task: any,
-    weekDay: WeekDayObj
+    weekDay: WeekDayObj,
+    color: any
 }
-const TaskCard = ({task, weekDay} : Props) => {
+const TaskCard = ({task, weekDay, color} : Props) => {
     console.log("Tasks:",task,weekDay.day)
     // Alternatively here could get people from state based on IDs.... probably should do this.
     const peopleOnDay = task.people.filter((person: any) => person.schedule.map((day: any) => day.day).includes(format(weekDay.date, 'EEEE').toLowerCase()))
@@ -25,15 +34,15 @@ const TaskCard = ({task, weekDay} : Props) => {
     // TODO: Make task cards responsive and size efficient
     return (
         <Grid item xs={1}>
-            <Card sx={{ display: 'flex' }}>
+            <Card  sx={{ display: 'flex', backgroundColor: color }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', flex: '1 1 auto' }}>
-                    <CardContent sx={{flex: '1 1 auto'}}>
-                        <Stack spacing={0.5} sx={{flex: 1}}>
+                    <CardContentPadding sx={{flex: '1 1 auto'}}>
+                        <Stack spacing={2} sx={{flex: 1}}>
                         {
                             task.taskList.map((subTask: any, index: any) => {
                                 return (
                                     <Autocomplete
-                                        multiple
+                                        // multiple
                                         key={`${weekDay.formatted}-${weekDay.day}-${subTask.taskName}`}
                                         size='small'
                                         id={`${weekDay.formatted}-${weekDay.day}-${subTask.taskName}`}
@@ -41,15 +50,16 @@ const TaskCard = ({task, weekDay} : Props) => {
                                         options={peopleOnDay.map((person: any) => person.name.first)}
                                         // getOptionLabel={(person: any) => person.name.first}
                                         renderInput={(params) => <TextField {...params} 
-                                        // InputLabelProps={{style: {fontSize: 18}}} 
-                                        label={subTask.taskName} />}
+                                            // InputLabelProps={{style: {fontSize: 18}}} 
+                                            // sx={{ backgroundColor: 'white' }}
+                                            label={subTask.taskName} />}
                                     />
                                        
                                 )
                             })
                         }
                         </Stack>
-                    </CardContent>
+                    </CardContentPadding>
                 </Box>
             </Card>
         </Grid>

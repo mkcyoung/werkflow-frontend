@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
 import TaskCard from './TaskCard';
+import { colors } from '../../constants';
 
 type Props = {
     taskData: Task[];
@@ -14,10 +15,10 @@ type Props = {
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
-    padding: theme.spacing(1.5),
+    padding: theme.spacing(0.75),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    fontSize: 14
+    fontSize: 18
 }));
 
 
@@ -69,7 +70,7 @@ const CalendarBody = ({taskData, week}: Props) => {
                     return (
                         <Grid key={index} container item spacing={1}>
                             <Grid item xs={7}> 
-                                <Item>{category}</Item>
+                                <Item sx={{backgroundColor: colors[index]}}>{category}</Item>
                             </Grid>
                         
                         {
@@ -77,7 +78,7 @@ const CalendarBody = ({taskData, week}: Props) => {
                                 const tasksOnDay = weekObj[`${weekDay.formatted}`].tasks?.filter((task: any) => task.category === category)
                                 if (tasksOnDay.length > 0){
                                     return tasksOnDay.map((task: any) => {
-                                        return <TaskCard key={i} task={task} weekDay={weekDay} />
+                                        return <TaskCard key={i} task={task} weekDay={weekDay} color={addAlpha(colors[index],0.2)} />
                                         // return task.taskList.map((subTask: any, j: any) => {
                                         //     return (
                                         //         <Grid item key={`${i}-${j}`} xs={1}>
@@ -90,7 +91,7 @@ const CalendarBody = ({taskData, week}: Props) => {
                                 } else {
                                     return (
                                         <Grid item key={i} xs={1}>
-                                            <Item></Item>
+                                            <div></div>
                                         </Grid>
                                     )
                                 }
@@ -140,6 +141,12 @@ const CalendarBody = ({taskData, week}: Props) => {
 
 const onlyUnique = (value: any, index: any, self: any) => {
     return self.indexOf(value) === index;
+}
+
+const addAlpha = (color: string, opacity: number): string => {
+    // coerce values so ti is between 0 and 1.
+    const _opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
+    return color + _opacity.toString(16).toUpperCase();
 }
 
 export default CalendarBody

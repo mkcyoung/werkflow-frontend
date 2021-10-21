@@ -9,6 +9,8 @@ import ChevronLeftRounded from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRounded from '@mui/icons-material/ChevronRightRounded';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import { colors } from '../../constants';
+
 
 import { WeekDayObj } from '../../types';
 
@@ -77,7 +79,7 @@ const styles = {
         height: 25,
         width: 25,
         color: 'white',
-        backgroundColor: 'coral'
+        backgroundColor: colors[0]
     }
 }
 
