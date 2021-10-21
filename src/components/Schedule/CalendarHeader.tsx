@@ -1,5 +1,12 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {format, sub, add, isSameDay} from 'date-fns';
+
+import AddPersonModal from "../AddPersonModal";
+import AddTaskModal from "../AddTaskModal";
+import { useDispatch } from 'react-redux'
+import { getTasks, addTask } from '../../reducers/taskReducer'
+import { getPeople, addPerson } from '../../reducers/peopleReducer'
+import { Task, Person, PersonFormValues, TaskFormValues, useAppSelector } from '../../types'
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -9,6 +16,13 @@ import ChevronLeftRounded from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRounded from '@mui/icons-material/ChevronRightRounded';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import SaveIcon from '@mui/icons-material/Save';
+import PeopleIcon from '@mui/icons-material/People';
+import TaskIcon from '@mui/icons-material/Task';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+
 import { colors } from '../../constants';
 
 
@@ -32,6 +46,53 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const CalendarHeader = ( {date, week, onChange}: Props) => {
 
+    const dispatch = useDispatch()
+
+    // initalize tasks & people
+    useEffect(() => {
+        console.log(" in app use effect")
+        dispatch(getTasks())
+        dispatch(getPeople())
+    }, [dispatch])
+    const tasks : Task[] = useAppSelector(state => state.tasks)
+    const people : Person[] = useAppSelector(state => state.people)
+    console.log("Tasks: ",tasks)
+    console.log("People: ",people)
+
+    const modalState = {
+        person: false,
+        task: false
+      }
+    
+    const [modalOpen, setModalOpen] = useState(modalState);
+    const [error, setError] = useState<string | undefined>();
+
+    const submitNewPerson = async (values: PersonFormValues ) => {
+        console.log("submitted", values)
+        dispatch(addPerson(values));
+        closeModal();
+    }
+
+    const submitNewTask = async (values: TaskFormValues) => {
+        console.log("submitted task: ", values)
+        dispatch(addTask(values))
+        closeModal();
+    }
+
+    const openModal = (modalType : 'person' | 'task'): void => {
+        modalState[modalType] = true
+        setModalOpen(modalState)
+    }
+
+    const closeModal = (): void => {
+        modalState['person'] = false
+        modalState['task'] = false
+        setModalOpen(modalState);
+        setError(undefined);
+    }
+
+
+
     return (
         <>
         <Grid container spacing={1} >
@@ -42,11 +103,22 @@ const CalendarHeader = ( {date, week, onChange}: Props) => {
             </Grid>
             
             <Grid item sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} xs={6} >
-                <ButtonGroup >
-                    <Button key='left' onClick={() => onChange(sub(date, {weeks: 1}))} > <ChevronLeftRounded/> </Button>
-                    <Button key='today' onClick={() => onChange(new Date())} > today </Button>
-                    <Button key='right' onClick={() => onChange(add(date, {weeks: 1}))}> <ChevronRightRounded/> </Button>
-                </ButtonGroup>
+                <Stack direction='row' spacing={2}>
+                    <Button variant="outlined" startIcon={<PersonAddIcon /> } onClick={() => openModal('person')}>
+                        add person
+                    </Button>
+                    <Button variant="outlined" startIcon={<AddTaskIcon />} onClick={() => openModal('task')}>
+                        add task
+                    </Button>
+                    <Button variant="outlined" startIcon={<SaveIcon />}>
+                        Save
+                    </Button>
+                    <ButtonGroup >
+                        <Button key='left' onClick={() => onChange(sub(date, {weeks: 1}))} > <ChevronLeftRounded/> </Button>
+                        <Button key='today' onClick={() => onChange(new Date())} > today </Button>
+                        <Button key='right' onClick={() => onChange(add(date, {weeks: 1}))}> <ChevronRightRounded/> </Button>
+                    </ButtonGroup>
+                </Stack>
             </Grid>
         </Grid>
         <Grid container spacing={1} >
@@ -65,6 +137,21 @@ const CalendarHeader = ( {date, week, onChange}: Props) => {
                 })}
             </Grid>
         </Grid>
+        <AddPersonModal
+            modalOpen={modalOpen['person']}
+            onSubmit={submitNewPerson}
+            error={error}
+            onClose={closeModal}
+            taskData={tasks} // this might not work well, may need to move fetching tasks to the actual modal form?
+        />
+        <AddTaskModal
+            modalOpen={modalOpen['task']}
+            onSubmit={submitNewTask}
+            error={error}
+            onClose={closeModal}
+            peopleData={people} // this might not work well, may need to move fetching tasks to the actual modal form?
+            taskData={tasks}
+        />
         </>
 )
 }
