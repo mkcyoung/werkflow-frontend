@@ -70,7 +70,7 @@ const CalendarBody = ({taskData, week}: Props) => {
                     return (
                         <Grid key={index} container item spacing={1}>
                             <Grid item xs={7}> 
-                                <Item sx={{backgroundColor: colors[index]}}>{category}</Item>
+                                <Item elevation={4} sx={{backgroundColor: colors[index]}}>{category}</Item>
                             </Grid>
                         
                         {

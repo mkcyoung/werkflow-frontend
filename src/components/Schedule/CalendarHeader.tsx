@@ -17,9 +17,8 @@ import ChevronRightRounded from '@mui/icons-material/ChevronRightRounded';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+
 import SaveIcon from '@mui/icons-material/Save';
-import PeopleIcon from '@mui/icons-material/People';
-import TaskIcon from '@mui/icons-material/Task';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 
@@ -92,7 +91,6 @@ const CalendarHeader = ( {date, week, onChange}: Props) => {
     }
 
 
-
     return (
         <>
         <Grid container spacing={1} >
@@ -131,7 +129,7 @@ const CalendarHeader = ( {date, week, onChange}: Props) => {
                     }
                     return (
                         <Grid key={weekDay.formatted} item xs={1}>
-                            <Item>{weekDay.formatted} <span style={dayStyle}> {weekDay.day} </span></Item>
+                            <Item elevation={4}>{weekDay.formatted} <span style={dayStyle}> {weekDay.day} </span></Item>
                         </Grid>
                     )
                 })}

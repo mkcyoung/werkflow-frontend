@@ -34,7 +34,7 @@ const TaskCard = ({task, weekDay, color} : Props) => {
     // TODO: Make task cards responsive and size efficient
     return (
         <Grid item xs={1}>
-            <Card  sx={{ display: 'flex', backgroundColor: color }}>
+            <Card elevation={4}  sx={{ display: 'flex', backgroundColor: color }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', flex: '1 1 auto' }}>
                     <CardContentPadding sx={{flex: '1 1 auto'}}>
                         <Stack spacing={2} sx={{flex: 1}}>

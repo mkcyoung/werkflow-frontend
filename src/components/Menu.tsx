@@ -18,7 +18,7 @@ const NavMenu = () => {
       paddingRight: 5
     }
     return (
-        <Menu mode='horizontal'>
+        <Menu defaultSelectedKeys={['calendar']} mode='horizontal'>
             <Menu.Item key='calendar' icon={<CalendarOutlined/>}>
                 <Link to='/' style={padding}>Calendar</Link>
             </Menu.Item>
